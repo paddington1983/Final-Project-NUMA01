@@ -7,6 +7,7 @@ Created on Wed Dec 19 15:41:13 2018
 import unittest
 from fractals import fractal2D
 import numpy as np
+import numpy.testing as nt
 
 def function1(x1, x2):
     return x1**3 - 3*x1*x2**2 - 1
@@ -29,8 +30,11 @@ def dFunction2dx2(x1, x2):
 
 functionVector = np.array([function1, function2])
 derivativeMatrix = np.matrix([[dFunction1dx1, dFunction1dx2], [dFunction2dx1, dFunction2dx2]])
+fractal = fractal2D(functionVector, derivativeMatrix)
 
 class FractalsTest(unittest.TestCase):
+    
+    # TESTS FOR INIT
     def test_init_with_functions_and_derivatives(self):
         # correct type of both arguments and correct number of derivatives
         
@@ -69,9 +73,37 @@ class FractalsTest(unittest.TestCase):
     def test_init_with_wrong_type_functions_and_no_derivatives(self):
         # wrong type of only argument
         self.assertRaises(TypeError, fractal2D, "this is not a function vector")
+        self.assertRaises(TypeError, fractal2D, np.array(["this is not a function", "this is not a function either"]))
     def test_init_with_functions_and_wrong_type_derivatives(self):
         # correct type of first argument and wrong type of second argument
         self.assertRaises(TypeError, fractal2D, functionVector, "this is not a derivative matrix")
+        self.assertRaises(TypeError, fractal2D, functionVector, np.matrix([["this is not a function", "this is not a function either"], ["this is not a function", "this is not a function either"]]))
+    
+    # TESTS FOR FINDZEROPOSITION
+    def test_findZeroPosition_converges_to_zero1(self):
+        # find the zero at 1, 0 in 0 iterations (very lucky guess)
+        
+        guess = np.array([1, 0])
+        position, iterations = fractal.findZeroPosition(guess)
+        
+        # should return exactly the same vector and 0 iterations
+        self.assertEqual(id(position), id(guess))
+        self.assertEqual(iterations, 0)
+    def test_findZeroPosition_converges_to_zero2(self):
+        # find the zero at 10^(-1/3), -3^(1/2) * 10^(-1/3)
+        
+        guess = np.array([0.5, -1])
+        position, _ = fractal.findZeroPosition(guess)
+        
+        nt.assert_allclose(position, np.array([10**(-1/3), -3**(1/2) * 10**(-1/3)]))
+    def test_findZeroPosition_converges_to_zero3(self):
+        # find the zero at 10^(-1/3), 3^(1/2) * 10^(-1/3)
+        
+        guess = np.array([0.5, 1])
+        position, _ = fractal.findZeroPosition(guess)
+        
+        nt.assert_allclose(position, np.array([10**(-1/3), 3**(1/2) * 10**(-1/3)]))
+        
         
 suite = unittest.TestLoader().loadTestsFromTestCase(FractalsTest)
 unittest.TextTestRunner(verbosity=2).run(suite)

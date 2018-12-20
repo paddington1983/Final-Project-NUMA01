@@ -13,10 +13,47 @@ class fractal2D:
         self.derivativeMatrix = derivativeMatrix
         self.zeroes = []
         
-    def findZeroPosition(self, guess):
-        """Finds the position of a zero using Newton's Method, starting from guess, also returns how many iterations it took"""
+    def findZeroPosition(self, X):
+        """Finds the position of a zero using Newton's Method, starting from the guessed X position (vector), also returns how many iterations it took"""
         
-        return guess, 0
+        if not isinstance(X, np.ndarray):
+            raise TypeError("X should be a vector (numpy array)")
+        
+        # the maximum number of iterations before giving up and concluding it will not converge to zero
+        maxIterations = 25
+        
+        # a vector of zeroes we can easily compare with (and only have to create once)
+        zeroVector = np.zeros(self.functionVector.size)
+        
+        iterationsNeeded = 0
+        
+        while True:
+            # calculate the vector of Y values using the vector of X values (the X position)
+            Y = np.array([function(X) for function in self.functionVector])
+            
+            # we found the zero! exit the loop
+            if np.allclose(Y, zeroVector):
+                break
+            
+            # we give up, the max number of iterations has been reached and still no zero was found, return None as X position
+            if iterationsNeeded == maxIterations:
+                X = None
+                break
+            
+            # we have not found the zero yet, apparently we need another iteration
+            iterationsNeeded += 1
+            
+            # calculate the new X position:
+            # first we need to calculate the values of all derivatives
+            # use row.A1 as row is a matrix and A1 turns it into a vector, this makes it possible to loop over the values of the vector in the inner loop
+            # looping over a matrix just generates more matrices
+            J = np.matrix([[derivative(X) for derivative in row.A1] for row in self.derivativeMatrix])
+            # then we can calculate the new X using the formula for Newton's method for several dimensions
+            # we need the transpose of Y as matrix-vector multiplication needs to be done with a column vector
+            # then we need to use A1 again to turn the result of the matrix-vector multiplication (which numpy thinks is a matrix) into a vector again
+            X = X - (np.linalg.inv(J) * np.matrix(Y).T).A1
+        
+        return X, iterationsNeeded
     
     def plot(resolution, x1Start, x1Stop, x2Start, x2Stop):
         """Given two intervals one for the x1 variable and one for the x2 variable, this method

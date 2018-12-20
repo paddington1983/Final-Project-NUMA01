@@ -64,6 +64,7 @@ class fractal2D:
                 # TODO handle if zeros function did not converge to a zero point.
         
         # Plot the resulting matrix with respect to the corodinates (x1, x2).
+        # (keep in mind that by plotting, the last column and row of zerosMatrix will be discarded.)
         plt.plot(rows, columns, zerosMatrix)
         # Make shure the hight and wiht of the plot are of equal length. 
         # So each colored rectangle is square like a pixel.

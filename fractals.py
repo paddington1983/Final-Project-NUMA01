@@ -9,8 +9,8 @@ import numpy as np
 
 print('hello, world!')
 
-Class fractal2D:
-Def __init__(self, function,derivativematrix):
-self.function=function
-self.derivativematrix=derivativematrix
-self.zeroes=[]
+class fractal2D:
+	def __init__(self, function,derivativematrix):
+		self.function=function
+		self.derivativematrix=derivativematrix
+		self.zeroes=[]

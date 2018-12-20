@@ -9,24 +9,24 @@ from fractals import fractal2D
 import numpy as np
 import numpy.testing as nt
 
-def function1(x1, x2):
-    return x1**3 - 3*x1*x2**2 - 1
+def function1(x):
+    return x[0]**3 - 3*x[0]*x[1]**2 - 1
 
-def dFunction1dx1(x1, x2):
+def dFunction1dx1(x):
     # derivative of function 1 wrt x1
-    return 3*x1**2 - 3*x2**2
+    return 3*x[0]**2 - 3*x[1]**2
 
-def dFunction1dx2(x1, x2):
-    return 6*x1*x2
+def dFunction1dx2(x):
+    return 6*x[0]*x[1]
 
-def function2(x1, x2):
-    return 3*x2*x1**2 - x2**3
+def function2(x):
+    return 3*x[1]*x[0]**2 - x[1]**3
 
-def dFunction2dx1(x1, x2):
-    return 6*x1*x2
+def dFunction2dx1(x):
+    return 6*x[0]*x[1]
 
-def dFunction2dx2(x1, x2):
-    return 3*x1**2 - 3*x2**2
+def dFunction2dx2(x):
+    return 3*x[0]**2 - 3*x[1]**2
 
 functionVector = np.array([function1, function2])
 derivativeMatrix = np.matrix([[dFunction1dx1, dFunction1dx2], [dFunction2dx1, dFunction2dx2]])

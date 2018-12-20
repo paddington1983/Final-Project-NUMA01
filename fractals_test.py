@@ -129,6 +129,8 @@ class FractalsTest(unittest.TestCase):
         
         nt.assert_allclose(position, np.array([3, 4]))
         self.assertEqual(iterationsNeeded, 10)
+    def test_findZeroPosition_wrong_input(self):
+        self.assertRaises(TypeError, fractal.findZeroPosition, "this is not a guess vector")
         
 suite = unittest.TestLoader().loadTestsFromTestCase(FractalsTest)
 unittest.TextTestRunner(verbosity=2).run(suite)

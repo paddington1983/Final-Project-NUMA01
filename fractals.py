@@ -23,7 +23,7 @@ class fractal2D:
         maxIterations = 25
         
         # a vector of zeroes we can easily compare with (and only have to create once)
-        zeroVector = np.zeros(self.functionVector.size)
+        zeroVector = np.zeros(2)
         
         iterationsNeeded = 0
         

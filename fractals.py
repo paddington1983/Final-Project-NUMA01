@@ -27,6 +27,19 @@ class fractal2D:
         x1Start, x1Stop = the interval of the first variable.
         x2Start, x2Stop = the interval of the second variable. """
         
+        # Validate that the input is of correct data type.
+        if not isinstance(resolution, int):
+            raise TypeError('Resolution should be of type int.')
+        if not all(isinstance(variable, (int or float)) for variable in [x1Start, x1Stop, x2Start, x2Stop]):
+            raise TypeError('All start and stop variables should be of type int or fload.')
+        
+        # Validate that the intervals of x1 and x2 are valid.
+        if x1Start >= x1Stop:
+            raise ValueError('The x1 start value is higher than the x1 stop value.')
+        if x2Start >= x2Stop:
+            raise ValueError('The x2 start value is higher than the x2 stop value.')
+        
+        
         # Init two matricies both in resolution*resolution dimentions.
         # Columns will have the x1 entrys stored in columns.
         # columns: [[1 2 3 4]
@@ -47,7 +60,7 @@ class fractal2D:
         # zero it will converge with Newtons method, this will be stored in zerosMatrix.
         for i, x1 in enumerate(row):
             for j, x2 in enumerate(column):
-                zerosMatrix[i][j]= #TODO call to zeros function here args(x1, x2)
+                zerosMatrix[i][j]= 0 #TODO call to zeros function here args(x1, x2)
                 # TODO handle if zeros function did not converge to a zero point.
         
         # Plot the resulting matrix with respect to the corodinates (x1, x2).

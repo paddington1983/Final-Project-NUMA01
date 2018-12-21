@@ -66,14 +66,14 @@ class fractal2D:
             
             
     #when we use 'findZeroPosition' method, there is no zero was found, then return None as x0 position and raise an error          
-        if findZeroPosition(self, x0)[0]==None:                     
+        if self.findZeroPosition(x0)[0]==None:                     
             x0 = None
             raise TypeError("the algorithm has not converged")
   
     #otherwise, if we can find a zero, then we use a loop to compare the newly found value with the already found zeroes(which have stored in the zeros list) with the tolerance'1.e-05'  
     #after comparing, we add the newly found value into the zeros list  
         else:
-            x0 = findZeroPosition(self, x0)[0]
+            x0 = self.findZeroPosition(x0)[0]
             for i in len(zeros):
                 if abs(x0-zeros[i])<1.e-05:
                     break               

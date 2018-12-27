@@ -131,6 +131,28 @@ class FractalsTest(unittest.TestCase):
         self.assertEqual(iterationsNeeded, 10)
     def test_findZeroPosition_wrong_input(self):
         self.assertRaises(TypeError, fractal.findZeroPosition, "this is not a guess vector")
+    def test_findZeroPosition_input_wrong_size(self):
+        self.assertRaises(ValueError, fractal.findZeroPosition, np.array([1, 1, 1]))
+        self.assertRaises(ValueError, fractal.findZeroPosition, np.array([1]))
         
+    # TESTS FOR TASK 3
+    def test_givenInitialPoint_slide_example_works(self):
+        # check if the example used in the slides works, we know from that example where it converges to and in how many iterations
+        
+        slidesFractal = fractal2D(np.array([f1, f2]), np.matrix([[f1x, f1y], [f2x, f2y]]))
+        index, iterationsNeeded = slidesFractal.givenInitialPoint(np.array([1, 1]))
+        
+        self.assertEqual(index, 0)
+        self.assertEqual(iterationsNeeded, 10)
+        self.assertEqual(slidesFractal.zeroes.size, 1)
+        nt.assert_allclose(slidesFractal.zeroes[0], np.array([3, 4]))
+        
+        # calling the method a second time should not increase the length of the zeroes list (in fact, it should not change anything)
+        index, iterationsNeeded = slidesFractal.givenInitialPoint(np.array([1, 1]))
+        self.assertEqual(index, 0)
+        self.assertEqual(iterationsNeeded, 10)
+        self.assertEqual(slidesFractal.zeroes.size, 1)
+        nt.assert_allclose(slidesFractal.zeroes[0], np.array([3, 4]))
+    
 suite = unittest.TestLoader().loadTestsFromTestCase(FractalsTest)
 unittest.TextTestRunner(verbosity=2).run(suite)

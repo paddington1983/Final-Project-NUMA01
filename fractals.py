@@ -19,6 +19,9 @@ class fractal2D:
         if not isinstance(X, np.ndarray):
             raise TypeError("X should be a vector (numpy array)")
         
+        if X.size != 2:
+            raise ValueError("X should be a vector of length 2")
+        
         # the maximum number of iterations before giving up and concluding it will not converge to zero
         maxIterations = 25
         

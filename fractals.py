@@ -60,32 +60,34 @@ class fractal2D:
     
    #TASK 3 
    
-    #empty list to store the zeros
-    zeros=[]                                                       
-    
-    def givenInitialPoint(self, x0):
+    def findZeroIndex(self, x0):
         if not isinstance(x0, np.ndarray):
             raise TypeError("x0 should be a vector (numpy array)")
             
+        indexOfTheZero = -1
+        position, iterationsNeeded = self.findZeroPosition(x0)
             
     #when we use 'findZeroPosition' method, there is no zero was found, then return None as x0 position and raise an error          
-        if self.findZeroPosition(x0)[0]==None:                     
-            x0 = None
-            raise TypeError("the algorithm has not converged")
-  
     #otherwise, if we can find a zero, then we use a loop to compare the newly found value with the already found zeroes(which have stored in the zeros list) with the tolerance'1.e-05'  
     #after comparing, we add the newly found value into the zeros list  
-        else:
-            x0 = self.findZeroPosition(x0)[0]
-            if len(zeros)>0:                     #when the zeros list already has at least one value, then compare them.
-                for i in len(zeros):
-                    if abs(x0-zeros[i])<1.e-05:
+        if isinstance(position, np.ndarray):
+            if len(self.zeroes)>0:                     #when the zeros list already has at least one value, then compare them.
+                zeroWasFoundInList = False
+                
+                for i in range(len(self.zeroes)):
+                    if np.allclose(self.zeroes[i], position):
+                        zeroWasFoundInList = True
+                        indexOfTheZero = i
                         break
-                zeros.append(x0)
+                
+                if not zeroWasFoundInList:
+                    self.zeroes.append(position)
+                    indexOfTheZero = len(self.zeroes) - 1
             else:                                 #if the zeros list is empty now , just add x0 into the zeros list 
-                zeros.append(x0)
+                self.zeroes.append(position)
+                indexOfTheZero = 0
             
-        return (x0,len(zeros))
+        return (indexOfTheZero, iterationsNeeded)
             
    ######     
         

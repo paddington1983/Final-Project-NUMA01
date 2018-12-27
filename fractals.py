@@ -74,11 +74,14 @@ class fractal2D:
     #after comparing, we add the newly found value into the zeros list  
         else:
             x0 = self.findZeroPosition(x0)[0]
-            for i in len(zeros):
-                if abs(x0-zeros[i])<1.e-05:
-                    break               
-            zeros.append(x0)
-                                        
+            if len(zeros)>0:                     #when the zeros list already has at least one value, then compare them.
+                for i in len(zeros):
+                    if abs(x0-zeros[i])<1.e-05:
+                        break
+                zeros.append(x0)
+            else:                                 #if the zeros list is empty now , just add x0 into the zeros list 
+                zeros.append(x0)
+            
         return (x0,len(zeros))
             
    ######     

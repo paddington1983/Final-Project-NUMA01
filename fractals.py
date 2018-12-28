@@ -9,16 +9,57 @@ import numpy as np
 
 class fractal2D:
     def __init__(self, functionVector, derivativeMatrix):
+        
+        """It is verry important to validate your variables before you start working with them. So I moved this block to the biginning of the 
+        init method!"""
+        
+        """Here I made an example of how to apply isinstance in the right way. It was basically correct, but I added the 'np.matrix'
+        Now it will chack if derivativeMatrix is of data type matrix. So when you use isinstance you first write the variable name you 
+        want to check and than ater a comma you write the data type you want it to check."""
+        if not isinstance(derivativeMatrix, np.matrix ):
+            raise TypeError("Derivative matrix should be of type matrix")
+        
+        """Now you need to check if the derivativeMatrix has the correct dimentions.
+        To do this use derivativeMatrix.shape == 'a 2x2 marix' 
+        Here is a link to the information on the function shape and how to use it: https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.matrix.shape.html
+        Keep in mind that .shape returns a tuple so you need to comape what it returns to a tuple. So think about what .shape should return and check if it indeed retuns this. 
+        If it dosn't return what it is supposed to than rais a ValueError. That works the same as a TypeError but with a different name, aka ValueError."""
+        
+        """Now we need one more validation for the derivativeMatrix variable. We need to check if the stuf in the derivativeMartix has the correct type. 
+        This means that we need to check if the entrys in the matrix are of a 'function' type. The derivatives are functions. To do this in python
+        we need the method callable(). Here is a link to the usage of callable: https://www.programiz.com/python-programming/methods/built-in/callable
+        In general if you give callable some argument it will check if python can execute what you give it as an argument. This is what we
+        need to check if somethin is a function. 
+        To check if the derivative matrix has four function we need to loop over the entire matrix and check if every cell in the marix 
+        contains a funtion, aka if callable returns 'true'. If callable returns false we need to raise an TypeError to tell the user that they made
+        a matrix that we can not use."""
+        
+        """Now we can make sure that functionVactor is of the correct type and shape. 
+        First we need to check if functionVector is of type np.ndarray. Here I have compleated what you had written as an example. 
+        Note the 'np.ndarray' and the slightly altered error message so users get more information on what they did wrong."""
+        if not isinstance(functionVector, np.ndarray):
+            raise TypeError("FunctionVector must be of type array.")
+        """Now we need to check if functionVector has the correct shape. So we can use the shape method we used above again in this case as well.
+        Now if shape is used on a one dimentional matrix. So just with one row, it will return a tuple of the form (length, 'nothing') so we need to addapt our check here accordingly.
+        If the length if the array is not correct we need to raise a ValueError again but with a different message so the user knows what
+        went wrong."""
+        # if not isinstance(functionVector, ):
+            #  raise TypeError("there must be two functions")
+        
+        """Finally we need to check if the entrys in the array are of type function again. So we can use callable again on every entry in the array. 
+        If one of the entrys in the functionVector is not a function we need to raise a TypeError again and let the user know what he or she did wrong this time. 
+        
+        If you have all these checks working correctly you can see that if you run the test file (just open the test files tab and click run) than you chould see that there 
+        are no more errors or fails. YEAY! ;-)
+        I hope this makes it all a lot more clear, if you have any more questions please let me know.  I will do my best to help.
+        """
+        
+        
         self.functionVector = functionVector
         self.derivativeMatrix = derivativeMatrix
         self.zeroes = []
         
- 	# if not isinstance(derivativeMatrix, ):
-           # raise TypeError("Derivative matrix should be 2x2")
-       # if not isinstance(functionVector, ):
-          #  raise TypeError("there must be two functions")
-       # if not isinstance(functionVector, ):
-         #  raise TypeError("functionVector must be a vector")
+        
 
 
     def findZeroPosition(self, X):

@@ -141,7 +141,7 @@ class fractal2D:
    ######     
         
         
-    def plot(resolution, x1Start, x1Stop, x2Start, x2Stop):
+    def plot(self, resolution, x1Start, x1Stop, x2Start, x2Stop):
         """Given two intervals one for the x1 variable and one for the x2 variable, this method
         will create a plot based on to which zero Newton's method converged. Each zero will have
         its own color in the image. 
@@ -183,7 +183,7 @@ class fractal2D:
         # zero it will converge with Newtons method, this will be stored in zerosMatrix.
         for i, x1 in enumerate(row):
             for j, x2 in enumerate(column):
-                zerosMatrix[i][j]= 0 #TODO call to zeros function here args(x1, x2)
+                zerosMatrix[i][j]= self.findZeroIndex(np.array([x1, x2]))
                 # TODO handle if zeros function did not converge to a zero point.
         
         # Plot the resulting matrix with respect to the corodinates (x1, x2).

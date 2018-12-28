@@ -13,6 +13,14 @@ class fractal2D:
         self.derivativeMatrix = derivativeMatrix
         self.zeroes = []
         
+ 	# if not isinstance(derivativeMatrix, ):
+           # raise TypeError("Derivative matrix should be 2x2")
+       # if not isinstance(functionVector, ):
+          #  raise TypeError("there must be two functions")
+       # if not isinstance(functionVector, ):
+         #  raise TypeError("functionVector must be a vector")
+
+
     def findZeroPosition(self, X):
         """Finds the position of a zero using Newton's Method, starting from the guessed X position (vector), also returns how many iterations it took"""
         

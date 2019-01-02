@@ -153,7 +153,22 @@ class FractalsTest(unittest.TestCase):
     
     # TESTS FOR PLOT
     def test_plot_with_correct_arguments(self):
+        # we dont want to show the plot, so replace the pyplot functions with a function that does nothing, first back them up though
+        show_backup = f.plt.show
+        pcolor_backup = f.plt.pcolor
+        axis_backup = f.plt.axis
+        doNothing = lambda *args: None
+        f.plt.show = doNothing
+        f.plt.pcolor = doNothing
+        f.plt.axis = doNothing
+        
+        # now we can test without plotting
         fractal.plot(2, -1, 1, -1, 1)
+        
+        # now restore these functions
+        f.plt.show = show_backup
+        f.plt.pcolor = pcolor_backup
+        f.plt.axis = axis_backup
     def test_plot_with_wrong_resolution_type(self):
         self.assertRaises(TypeError, fractal.plot, "2", -1, 1, -1, 1)
     def test_plot_with_negative_resolution(self):

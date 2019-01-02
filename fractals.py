@@ -125,6 +125,10 @@ class fractal2D:
             raise TypeError('Resolution should be of type int.')
         if not all(isinstance(variable, (int or float)) for variable in [x1Start, x1Stop, x2Start, x2Stop]):
             raise TypeError('All start and stop variables should be of type int or fload.')
+            
+        # Validate that the resolution value is valid.
+        if resolution <= 0:
+            raise ValueError('The resolution value must be a positive interger.')
         
         # Validate that the intervals of x1 and x2 are valid.
         if x1Start >= x1Stop:
@@ -155,7 +159,7 @@ class fractal2D:
             for j, x2 in enumerate(column):
                 indexAndItterations = self.findZeroIndex(np.array([x1, x2]))
                 zerosMatrix[i][j]= indexAndItterations[0]
-                # TODO handle if zeros function did not converge to a zero point so if findzeroindex returns -1.
+                #( TODO handle if zeros function did not converge to a zero point so if findzeroindex returns -1. make pixel blak?)
         
         # Plot the resulting matrix with respect to the corodinates (x1, x2).
         # (keep in mind that by plotting, the last column and row of zerosMatrix will be discarded.)

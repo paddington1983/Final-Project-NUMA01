@@ -42,13 +42,8 @@ class fractal2D:
 
 
     def findZeroPosition(self, X):
-        """Finds the position of a zero using Newton's Method, starting from the guessed X position (vector), also returns how many iterations it took"""
-        
-        if not isinstance(X, np.ndarray):
-            raise TypeError("X should be a vector (numpy array)")
-        
-        if X.size != 2:
-            raise ValueError("X should be a vector of length 2")
+        """Finds the position of a zero using Newton's Method, starting from the guessed X position (vector), also returns how many iterations it took.
+        NOTE: does not validate its arguments as it is not meant for external use"""
         
         # the maximum number of iterations before giving up and concluding it will not converge to zero
         maxIterations = 25
@@ -88,9 +83,6 @@ class fractal2D:
     
    
     def findZeroIndex(self, x0):
-        if not isinstance(x0, np.ndarray):
-            raise TypeError("x0 should be a vector (numpy array)")
-            
         indexOfTheZero = -1
         position, iterationsNeeded = self.findZeroPosition(x0)
             
@@ -116,7 +108,6 @@ class fractal2D:
                 indexOfTheZero = 0
             
         return (indexOfTheZero, iterationsNeeded)
-            
         
         
     def plot(self, resolution, x1Start, x1Stop, x2Start, x2Stop):

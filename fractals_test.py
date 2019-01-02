@@ -97,10 +97,28 @@ class FractalsTest(unittest.TestCase):
     
     
     # TESTS FOR FINDZEROPOSITION
-    def test_findZeroPosition_converges_to_zero1(self):
+    def test_findZeroPosition_converges_to_zero1_lucky(self):
         # find the zero at 1, 0 in 0 iterations (very lucky guess)
         
         guess = np.array([1, 0])
+        position, iterationsNeeded = fractal.findZeroPosition(guess)
+        
+        # should return exactly the same vector and 0 iterations
+        self.assertEqual(id(position), id(guess))
+        self.assertEqual(iterationsNeeded, 0)
+    def test_findZeroPosition_converges_to_zero2_lucky(self):
+        # find the zero at -1/2, sqrt(3)/2 in 0 iterations (very lucky guess)
+        
+        guess = np.array([-1/2, np.sqrt(3)/2])
+        position, iterationsNeeded = fractal.findZeroPosition(guess)
+        
+        # should return exactly the same vector and 0 iterations
+        self.assertEqual(id(position), id(guess))
+        self.assertEqual(iterationsNeeded, 0)
+    def test_findZeroPosition_converges_to_zero3_lucky(self):
+        # find the zero at -1/2, -sqrt(3)/2 in 0 iterations (very lucky guess)
+        
+        guess = np.array([-1/2, -np.sqrt(3)/2])
         position, iterationsNeeded = fractal.findZeroPosition(guess)
         
         # should return exactly the same vector and 0 iterations
@@ -151,5 +169,6 @@ class FractalsTest(unittest.TestCase):
         self.assertEqual(len(slidesFractal.zeroes), 1)
         nt.assert_allclose(slidesFractal.zeroes[0], np.array([3, 4]))
     
+
 suite = unittest.TestLoader().loadTestsFromTestCase(FractalsTest)
 unittest.TextTestRunner(verbosity=2).run(suite)

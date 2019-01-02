@@ -95,6 +95,7 @@ class FractalsTest(unittest.TestCase):
         self.assertRaises(TypeError, fractal2D, functionVector, "this is not a derivative matrix")
         self.assertRaises(TypeError, fractal2D, functionVector, np.matrix([["this is not a function", "this is not a function either"], ["this is not a function", "this is not a function either"]]))
     
+    
     # TESTS FOR FINDZEROPOSITION
     def test_findZeroPosition_converges_to_zero1(self):
         # find the zero at 1, 0 in 0 iterations (very lucky guess)
@@ -129,13 +130,9 @@ class FractalsTest(unittest.TestCase):
         
         nt.assert_allclose(position, np.array([3, 4]))
         self.assertEqual(iterationsNeeded, 10)
-    def test_findZeroPosition_wrong_input(self):
-        self.assertRaises(TypeError, fractal.findZeroPosition, "this is not a guess vector")
-    def test_findZeroPosition_input_wrong_size(self):
-        self.assertRaises(ValueError, fractal.findZeroPosition, np.array([1, 1, 1]))
-        self.assertRaises(ValueError, fractal.findZeroPosition, np.array([1]))
         
-    # TESTS FOR TASK 3
+        
+    # TESTS FOR FINDZEROINDEX
     def test_findZeroIndex_slide_example_works(self):
         # check if the example used in the slides works, we know from that example where it converges to and in how many iterations
         

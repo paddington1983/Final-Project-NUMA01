@@ -150,6 +150,23 @@ class FractalsTest(unittest.TestCase):
         self.assertEqual(len(slidesFractal.zeroes), 1)
         nt.assert_allclose(slidesFractal.zeroes[0], np.array([3, 4]))
     
+    
+    # TESTS FOR PLOT
+    def test_plot_with_correct_arguments(self):
+        fractal.plot(2, -1, 1, -1, 1)
+    def test_plot_with_wrong_resolution_type(self):
+        self.assertRaises(TypeError, fractal.plot, "2", -1, 1, -1, 1)
+    def test_plot_with_negative_resolution(self):
+        self.assertRaises(ValueError, fractal.plot, -2, -1, 1, -1, 1)
+    def test_plot_with_wrong_x_values_type(self):
+        self.assertRaises(TypeError, fractal.plot, 2, "-1", 1, -1, 1)
+        self.assertRaises(TypeError, fractal.plot, 2, -1, "1", -1, 1)
+        self.assertRaises(TypeError, fractal.plot, 2, -1, 1, "-1", 1)
+        self.assertRaises(TypeError, fractal.plot, 2, -1, 1, -1, "1")
+    def test_plot_with_negative_x1_interval(self):
+        self.assertRaises(ValueError, fractal.plot, 2, 1, -1, -1, 1)
+    def test_plot_with_negative_x2_interval(self):
+        self.assertRaises(ValueError, fractal.plot, 2, -1, 1, 1, -1)
 
 suite = unittest.TestLoader().loadTestsFromTestCase(FractalsTest)
 unittest.TextTestRunner(verbosity=2).run(suite)

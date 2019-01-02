@@ -190,12 +190,11 @@ def dFunction2dx2(x):
     # derivative of function 2 wrt x2
     return 3*x[0]**2 - 3*x[1]**2
 
-task4FunctionVector = np.array([function1, function2])
+if __name__ == "__main__":
+    task4FunctionVector = np.array([function1, function2])
 
-task4DerivativeMatrix = np.matrix([[dFunction1dx1, dFunction1dx2], [dFunction2dx1, dFunction2dx2]])
+    task4DerivativeMatrix = np.matrix([[dFunction1dx1, dFunction1dx2], [dFunction2dx1, dFunction2dx2]])
 
-firstFractal = fractal2D(task4FunctionVector, task4DerivativeMatrix)
+    firstFractal = fractal2D(task4FunctionVector, task4DerivativeMatrix)
 
-firstFractal.plot(40, -1, 1, -1, 1)
-                
-        
+    firstFractal.plot(40, -1, 1, -1, 1)                        

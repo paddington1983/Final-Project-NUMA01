@@ -5,34 +5,15 @@ Created on Wed Dec 19 15:41:13 2018
 @author: Ramon
 """
 import unittest
-from fractals import fractal2D
+import fractals as f
 import numpy as np
 import numpy.testing as nt
 
 
 # FUNCTIONS FROM THE PROJECT
-def function1(x):
-    return x[0]**3 - 3*x[0]*x[1]**2 - 1
-
-def dFunction1dx1(x):
-    # derivative of function 1 wrt x1
-    return 3*x[0]**2 - 3*x[1]**2
-
-def dFunction1dx2(x):
-    return 6*x[0]*x[1]
-
-def function2(x):
-    return 3*x[1]*x[0]**2 - x[1]**3
-
-def dFunction2dx1(x):
-    return 6*x[0]*x[1]
-
-def dFunction2dx2(x):
-    return 3*x[0]**2 - 3*x[1]**2
-
-functionVector = np.array([function1, function2])
-derivativeMatrix = np.matrix([[dFunction1dx1, dFunction1dx2], [dFunction2dx1, dFunction2dx2]])
-fractal = fractal2D(functionVector, derivativeMatrix)
+functionVector = np.array([f.function1, f.function2])
+derivativeMatrix = np.matrix([[f.dFunction1dx1, f.dFunction1dx2], [f.dFunction2dx1, f.dFunction2dx2]])
+fractal = f.fractal2D(functionVector, derivativeMatrix)
 
 # FUNCTIONS FROM THE SLIDES
 def f1(x):
@@ -54,7 +35,7 @@ class FractalsTest(unittest.TestCase):
     def test_init_with_functions_and_derivatives(self):
         # correct type of both arguments and correct number of derivatives
         
-        output = fractal2D(functionVector, derivativeMatrix)
+        output = f.fractal2D(functionVector, derivativeMatrix)
         
         # the arguments we put in are now stored in the object
         self.assertEqual(id(output.functionVector), id(functionVector))
@@ -66,7 +47,7 @@ class FractalsTest(unittest.TestCase):
     def test_init_with_functions_and_no_derivatives(self):
         # correct type of only argument
         
-        output = fractal2D(functionVector)
+        output = f.fractal2D(functionVector)
         
         self.assertEqual(id(output.functionVector), id(functionVector))
         self.assertIsNone(output.derivativeMatrix)
@@ -77,23 +58,23 @@ class FractalsTest(unittest.TestCase):
         # correct type of both arguments and wrong number of derivatives (if n is number or functions then derivative matrix should be n by n)
         
         # matrix is square, but with wrong n
-        wrongDerivativeMatrix = np.matrix([[dFunction1dx1]])
-        self.assertRaises(ValueError, fractal2D, functionVector, wrongDerivativeMatrix)
+        wrongDerivativeMatrix = np.matrix([[f.dFunction1dx1]])
+        self.assertRaises(ValueError, f.fractal2D, functionVector, wrongDerivativeMatrix)
         
         # non-square matrix and wrong n in one dimension
-        wrongDerivativeMatrix2 = np.matrix([[dFunction1dx1, dFunction1dx2, dFunction1dx2], [dFunction2dx1, dFunction2dx2, dFunction2dx2]])
-        self.assertRaises(ValueError, fractal2D, functionVector, wrongDerivativeMatrix2)
+        wrongDerivativeMatrix2 = np.matrix([[f.dFunction1dx1, f.dFunction1dx2, f.dFunction1dx2], [f.dFunction2dx1, f.dFunction2dx2, f.dFunction2dx2]])
+        self.assertRaises(ValueError, f.fractal2D, functionVector, wrongDerivativeMatrix2)
     def test_init_with_no_functions_or_derivatives(self):
         # no arguments
-        self.assertRaises(TypeError, fractal2D)
+        self.assertRaises(TypeError, f.fractal2D)
     def test_init_with_wrong_type_functions_and_no_derivatives(self):
         # wrong type of only argument
-        self.assertRaises(TypeError, fractal2D, "this is not a function vector")
-        self.assertRaises(TypeError, fractal2D, np.array(["this is not a function", "this is not a function either"]))
+        self.assertRaises(TypeError, f.fractal2D, "this is not a function vector")
+        self.assertRaises(TypeError, f.fractal2D, np.array(["this is not a function", "this is not a function either"]))
     def test_init_with_functions_and_wrong_type_derivatives(self):
         # correct type of first argument and wrong type of second argument
-        self.assertRaises(TypeError, fractal2D, functionVector, "this is not a derivative matrix")
-        self.assertRaises(TypeError, fractal2D, functionVector, np.matrix([["this is not a function", "this is not a function either"], ["this is not a function", "this is not a function either"]]))
+        self.assertRaises(TypeError, f.fractal2D, functionVector, "this is not a derivative matrix")
+        self.assertRaises(TypeError, f.fractal2D, functionVector, np.matrix([["this is not a function", "this is not a function either"], ["this is not a function", "this is not a function either"]]))
     
     
     # TESTS FOR FINDZEROPOSITION
@@ -143,7 +124,7 @@ class FractalsTest(unittest.TestCase):
     def test_findZeroPosition_slide_example_works(self):
         # check if the example used in the slides works, we know from that example where it converges to and in how many iterations
         
-        slidesFractal = fractal2D(np.array([f1, f2]), np.matrix([[f1x, f1y], [f2x, f2y]]))
+        slidesFractal = f.fractal2D(np.array([f1, f2]), np.matrix([[f1x, f1y], [f2x, f2y]]))
         position, iterationsNeeded = slidesFractal.findZeroPosition(np.array([1, 1]))
         
         nt.assert_allclose(position, np.array([3, 4]))
@@ -154,7 +135,7 @@ class FractalsTest(unittest.TestCase):
     def test_findZeroIndex_slide_example_works(self):
         # check if the example used in the slides works, we know from that example where it converges to and in how many iterations
         
-        slidesFractal = fractal2D(np.array([f1, f2]), np.matrix([[f1x, f1y], [f2x, f2y]]))
+        slidesFractal = f.fractal2D(np.array([f1, f2]), np.matrix([[f1x, f1y], [f2x, f2y]]))
         index, iterationsNeeded = slidesFractal.findZeroIndex(np.array([1, 1]))
         
         self.assertEqual(index, 0)

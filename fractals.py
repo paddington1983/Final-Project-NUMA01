@@ -46,7 +46,7 @@ class fractal2D:
         NOTE: does not validate its arguments as it is not meant for external use"""
         
         # the maximum number of iterations before giving up and concluding it will not converge to zero
-        maxIterations = 25
+        maxIterations = 50
         
         # a vector of zeroes we can easily compare with (and only have to create once)
         zeroVector = np.zeros(2)
@@ -57,6 +57,7 @@ class fractal2D:
             # calculate the vector of Y values using the vector of X values (the X position)
             Y = np.array([function(X) for function in self.functionVector])
             
+            #print("X:", X, "Y:", Y)
             # we found the zero! exit the loop
             if np.allclose(Y, zeroVector):
                 break
@@ -180,7 +181,7 @@ def dFunction1dx1(x):
 
 def dFunction1dx2(x):
     # derivative of function 1 wrt x2
-    return 6*x[0]*x[1]
+    return -6*x[0]*x[1]
 
 def dFunction2dx1(x):
     # derivative of function 2 wrt x1

@@ -198,4 +198,4 @@ if __name__ == "__main__":
 
     firstFractal = fractal2D(task4FunctionVector, task4DerivativeMatrix)
 
-    firstFractal.plot(40, -1, 1, -1, 1)                        
+    firstFractal.plot(200, -1, 1, -1, 1)                        

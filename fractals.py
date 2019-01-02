@@ -110,6 +110,7 @@ class fractal2D:
                 if not zeroWasFoundInList:
                     self.zeroes.append(position)
                     indexOfTheZero = len(self.zeroes) - 1
+
             else:                                 #if the zeros list is empty now , just add x0 into the zeros list 
                 self.zeroes.append(position)
                 indexOfTheZero = 0
@@ -160,16 +161,50 @@ class fractal2D:
         # zero it will converge with Newtons method, this will be stored in zerosMatrix.
         for i, x1 in enumerate(row):
             for j, x2 in enumerate(column):
-                zerosMatrix[i][j]= self.findZeroIndex(np.array([x1, x2]))
-                # TODO handle if zeros function did not converge to a zero point.
+                indexAndItterations = self.findZeroIndex(np.array([x1, x2]))
+                zerosMatrix[i][j]= indexAndItterations[0]
+                # TODO handle if zeros function did not converge to a zero point so if findzeroindex returns -1.
         
         # Plot the resulting matrix with respect to the corodinates (x1, x2).
         # (keep in mind that by plotting, the last column and row of zerosMatrix will be discarded.)
-        plt.plot(rows, columns, zerosMatrix)
+        plt.pcolor(rows, columns, zerosMatrix)
         # Make shure the hight and wiht of the plot are of equal length. 
         # So each colored rectangle is square like a pixel.
         plt.axis('scaled')
         plt.show()
         return
+    
+    
+
+"""Task 4, first initialization of the fractal 2d class and first call to plot() to visualise the function stated in task 4."""
+def function1(x):
+    return x[0]**3 - 3*x[0]*x[1]**2 - 1
+
+def function2(x):
+    return 3*x[1]*x[0]**2 - x[1]**3
+
+def dFunction1dx1(x):
+    # derivative of function 1 wrt x1
+    return 3*x[0]**2 - 3*x[1]**2
+
+def dFunction1dx2(x):
+    # derivative of function 1 wrt x2
+    return 6*x[0]*x[1]
+
+def dFunction2dx1(x):
+    # derivative of function 2 wrt x1
+    return 6*x[0]*x[1]
+
+def dFunction2dx2(x):
+    # derivative of function 2 wrt x2
+    return 3*x[0]**2 - 3*x[1]**2
+
+task4FunctionVector = np.array([function1, function2])
+
+task4DerivativeMatrix = np.matrix([[dFunction1dx1, dFunction1dx2], [dFunction2dx1, dFunction2dx2]])
+
+firstFractal = fractal2D(task4FunctionVector, task4DerivativeMatrix)
+
+firstFractal.plot(40, -1, 1, -1, 1)
                 
         

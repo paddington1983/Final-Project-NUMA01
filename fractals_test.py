@@ -171,17 +171,20 @@ class FractalsTest(unittest.TestCase):
         f.plt.axis = axis_backup
     def test_plot_with_wrong_resolution_type(self):
         self.assertRaises(TypeError, fractal.plot, "2", -1, 1, -1, 1)
-    def test_plot_with_negative_resolution(self):
+    def test_plot_with_nonpositive_resolution(self):
         self.assertRaises(ValueError, fractal.plot, -2, -1, 1, -1, 1)
+        self.assertRaises(ValueError, fractal.plot, 0, -1, 1, -1, 1)
     def test_plot_with_wrong_x_values_type(self):
         self.assertRaises(TypeError, fractal.plot, 2, "-1", 1, -1, 1)
         self.assertRaises(TypeError, fractal.plot, 2, -1, "1", -1, 1)
         self.assertRaises(TypeError, fractal.plot, 2, -1, 1, "-1", 1)
         self.assertRaises(TypeError, fractal.plot, 2, -1, 1, -1, "1")
-    def test_plot_with_negative_x1_interval(self):
+    def test_plot_with_nonpositive_x1_interval(self):
         self.assertRaises(ValueError, fractal.plot, 2, 1, -1, -1, 1)
-    def test_plot_with_negative_x2_interval(self):
+        self.assertRaises(ValueError, fractal.plot, 2, 1, 1, -1, 1)
+    def test_plot_with_nonpositive_x2_interval(self):
         self.assertRaises(ValueError, fractal.plot, 2, -1, 1, 1, -1)
+        self.assertRaises(ValueError, fractal.plot, 2, -1, 1, 1, 1)
 
 suite = unittest.TestLoader().loadTestsFromTestCase(FractalsTest)
 unittest.TextTestRunner(verbosity=2).run(suite)

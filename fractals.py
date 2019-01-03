@@ -7,6 +7,7 @@ Created on Wed Dec 19 15:40:25 2018
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 class fractal2D:
     def __init__(self, functionVector, derivativeMatrix):
         
@@ -81,6 +82,34 @@ class fractal2D:
             X = X - (np.linalg.inv(J) * np.matrix(Y).T).A1
         
         return X, iterationsNeeded
+
+#Simplified Newton's Method
+    def simplifiedMethod(self):
+        maxIterations = 50 
+        zeroVector = np.zeros(2)
+        iterationsNeeded = 0
+#jacobian matrices for each function in the assignment -> F(x)        
+        jacobian1=np.array[[dFunction1dx1, dFunction1dx2],[dFunction2dx1,dFunction2dx2]]
+        jacobian2=np.array[[dFunction21dx1,dFunction21dx2],[dFunction22dx1,dFunction22dx2]]
+        jacobian3=np.array[[dFunction31dx1, dFunction31dx2],[dFunction32dx1,dFunction32dx2]]
+        
+        jacobian=[jacobian1, jacobian2, jacobian3] 
+        function=[function1, function21, function31]
+        while True:
+            Y = np.array([function(X) for function in self.functionVector])
+            if np.allclose(Y, zeroVector):
+                break
+            if iterationsNeeded == maxIterations:
+                X = None
+                break
+            iterationsNeeded += 1
+            for j in list(range(1,4)):
+                if function==function[j]:
+                    X = X - (np.linalg.inv(jacobian[j]) * np.matrix(Y).T).A1
+        
+        return X, iterationsNeeded
+        
+
     
    
     def findZeroIndex(self, x0):
@@ -110,8 +139,7 @@ class fractal2D:
             
         return (indexOfTheZero, iterationsNeeded)
         
-        
-    def plot(self, resolution, x1Start, x1Stop, x2Start, x2Stop):
+    def plot(self, resolution, x1Start, x1Stop, x2Start, x2Stop, findZeroIndex=False ):
         """Given two intervals one for the x1 variable and one for the x2 variable, this method
         will create a plot based on to which zero Newton's method converged. Each zero will have
         its own color in the image. 
@@ -119,16 +147,13 @@ class fractal2D:
         Resolution = how many 'pixels' each row and column has in the final image. Higher is better but slower.
         x1Start, x1Stop = the interval of the first variable.
         x2Start, x2Stop = the interval of the second variable. """
-        
+
+            
         # Validate that the input is of correct data type.
         if not isinstance(resolution, int):
             raise TypeError('Resolution should be of type int.')
         if not all(isinstance(variable, (int or float)) for variable in [x1Start, x1Stop, x2Start, x2Stop]):
             raise TypeError('All start and stop variables should be of type int or fload.')
-            
-        # Validate that the resolution value is valid.
-        if resolution <= 0:
-            raise ValueError('The resolution value must be a positive interger.')
         
         # Validate that the intervals of x1 and x2 are valid.
         if x1Start >= x1Stop:
@@ -152,22 +177,35 @@ class fractal2D:
         row = np.linspace(x2Start, x2Stop, resolution)
         columns, rows = np.meshgrid(column, row)
         zerosMatrix = np.empty([resolution, resolution])
-        
-        # Build the zerosMAtrix. Each point in the grid (x1, x2) will be checked to wich
+        """boolean parameter task 5 to select the method to apply"""
+        if findZeroIndex==False:
+            
+                    # Build the zerosMAtrix. Each point in the grid (x1, x2) will be checked to wich
         # zero it will converge with Newtons method, this will be stored in zerosMatrix.
-        for i, x1 in enumerate(row):
-            for j, x2 in enumerate(column):
-                indexAndItterations = self.findZeroIndex(np.array([x1, x2]))
-                zerosMatrix[i][j]= indexAndItterations[0]
-                #( TODO handle if zeros function did not converge to a zero point so if findzeroindex returns -1. make pixel blak?)
+            for i, x1 in enumerate(row):
+                for j, x2 in enumerate(column):
+                    indexAndItterations = self.simplifiedMethod(np.array([x1, x2]))
+                    zerosMatrix[i][j]= indexAndItterations[0]
+                # TODO handle if zeros function did not converge to a zero point so if findzeroindex returns -1.
         
         # Plot the resulting matrix with respect to the corodinates (x1, x2).
         # (keep in mind that by plotting, the last column and row of zerosMatrix will be discarded.)
-        plt.pcolor(rows, columns, zerosMatrix)
+            plt.pcolor(rows, columns, zerosMatrix)
         # Make shure the hight and wiht of the plot are of equal length. 
         # So each colored rectangle is square like a pixel.
-        plt.axis('scaled')
-        plt.show()
+            plt.axis('scaled')
+            plt.show()
+        else:
+            for i, x1 in enumerate(row):
+                for j, x2 in enumerate(column):
+                    indexAndItterations = self.findZeroIndex(np.array([x1, x2]))
+                    zerosMatrix[i][j]= indexAndItterations[0]
+                    
+            plt.pcolor(rows, columns, zerosMatrix)
+            plt.axis('scaled')
+            plt.show()            
+            
+      
         return
     
     
@@ -203,3 +241,50 @@ if __name__ == "__main__":
     firstFractal = fractal2D(task4FunctionVector, task4DerivativeMatrix)
 
     firstFractal.plot(200, -1, 1, -1, 1)                        
+
+#Functions
+#F(x) 1 and its derivative (Task 8)
+def function21(x):
+    return x[0]**3 - 3*x[0]*x[1]**2 - 2*x[0]-2
+
+def function22(x):
+    return 3*x[1]*x[0]**2 - x[1]**3 -2*x[1]
+
+def dFunction21dx1(x):
+    # derivative of function 1 wrt x1
+    return 3*x[0]**2 - 3*x[1]**2 -2
+
+def dFunction21dx2(x):
+    # derivative of function 1 wrt x2
+    return -6*x[0]*x[1]
+
+def dFunction22dx1(x):
+    # derivative of function 2 wrt x1
+    return 6*x[0]*x[1]
+
+def dFunction22dx2(x):
+    # derivative of function 2 wrt x2
+    return 3*x[0]**2 - 3*x[1]**2 -2
+
+#F(x) 2 and its derivative (Task 8)
+def function31(x):
+    return x[0]**8 - 28*(x[0]**6)*x[1]**2 + 70*(x[0]**4)*x[1]**4 + 15*x[0]**4 -28*(x[0]**2)*x[1]**6 - 90*(x[0]**2)*x[1]**2 + x[1]**8 +15*x[1]**4 -16
+
+def function32(x):
+    return 8*(x[0]**7)*x[1] - 56*(x[0]**5)*x[1]**3 +56*(x[0]**3)*x[1]**5 + 60*(x[0]**3)*x[1] -8*x[0]*x[1]**7 -60*x[0]*x[1]**3
+
+def dFunction31dx1(x):
+    # derivative of function 1 wrt x1
+    return 8*(x[0]**7)- 168*(x[0]**5)*x[1]**2 + 280*(x[0]**3)*x[1]**4 + 60*(x[0]**3)-56*x[0]*x[1]**6 -180*x[0]*x[1]**2
+
+def dFunction31dx2(x):
+    # derivative of function 1 wrt x2
+    return 8*(x[1]**7)- 168*(x[0]**2)*x[1]**5 + 280*(x[0]**4)*x[1]**3 + 60*(x[1]**3)-56*x[1]*x[0]**6 -180*x[1]*x[0]**2
+
+def dFunction32dx1(x):
+    # derivative of function 2 wrt x1
+    return 56*(x[0]**6)*x[1] -280*(x[0]**4)*x[1]**3 + 168*(x[0]**2)*x[1]**5 + 180*(x[0]**2)*x[1] -8*x[1]**7 -60*x[1]**3
+
+def dFunction32dx2(x):
+    # derivative of function 2 wrt x2
+    return 8*x[0]**7 -168*(x[0]**5)*x[1]**2 + 280*(x[0]**3)*x[1]**4 - 56*x[0]*x[1]**6 -180*x[0]*x[1]**6 -60*x[0]**3

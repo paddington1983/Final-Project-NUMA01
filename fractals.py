@@ -6,7 +6,7 @@ Created on Wed Dec 19 15:40:25 2018
 """
 import matplotlib.pyplot as plt
 import numpy as np
-
+from mpl_toolkits.mplot3d import axes3d
 
 class fractal2D:
     def __init__(self, functionVector, derivativeMatrix):
@@ -208,7 +208,39 @@ class fractal2D:
       
         return
     
-    
+ #TASK7
+     def NumberOfIterations(self,resolution, x1Start, x1Stop, x2Start, x2Stop, findZeroIndex=False):
+        if not isinstance(resolution, int):
+            raise TypeError('Resolution should be of type int.')
+        if not all(isinstance(variable, (int or float)) for variable in [x1Start, x1Stop, x2Start, x2Stop]):
+            raise TypeError('All start and stop variables should be of type int or fload.')
+        if x1Start >= x1Stop:
+            raise ValueError('The x1 start value is higher than the x1 stop value.')
+        if x2Start >= x2Stop:
+            raise ValueError('The x2 start value is higher than the x2 stop value.')
+        column = np.linspace(x1Start, x1Stop, resolution)
+        row = np.linspace(x2Start, x2Stop, resolution)
+        columns, rows = np.meshgrid(column, row)
+        zerosMatrix = np.empty([resolution, resolution])
+        if findZeroIndex==False:
+            for i, x1 in enumerate(row):
+                for j, x2 in enumerate(column):
+                    indexAndItterations = self.findZeroIndex(np.array([x1, x2]))
+                    zerosMatrix[i][j] = indexAndItterations[1]
+        else:
+            for i, x1 in enumerate(row):
+                for j, x2 in enumerate(column):
+                    indexAndItterations = self.findZeroIndex(np.array([x1, x2]))
+                    zerosMatrix[i][j] = indexAndItterations[1]
+        ax = plt.gca(projection='3d')
+        plt.title('Number of iterations')
+        ax.set_xlabel('x')
+        ax.set_ylabel('y')
+        ax.set_zlabel('z')
+        plt.tick_params(labelsize=10)
+        ax.plot_surface(columns, rows, zerosMatrix, rstride=10, cstride=10, cmap='jet')
+        plt.show()
+        return   
 
 """Task 4, first initialization of the fractal 2d class and first call to plot() to visualise the function stated in task 4."""
 def function1(x):

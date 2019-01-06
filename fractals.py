@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- Encoding: utf-8 -*-
 """
 Created on Wed Dec 19 15:40:25 2018
 
@@ -9,7 +9,8 @@ import numpy as np
 from mpl_toolkits.mplot3d import axes3d
 
 class fractal2D:
-    def __init__(self, functionVector, derivativeMatrix):
+    def __init__(self, functionVector, derivativeMatrix=None, h=1e-3): 
+        # derivativeMatrix=None, h=1e-3 are for task 6
         
         # check if functionVector is a vector of 2 functions
         if not isinstance(functionVector, np.ndarray):
@@ -38,8 +39,18 @@ class fractal2D:
 
         # initialize the class
         self.functionVector = functionVector
-        self.derivativeMatrix = derivativeMatrix
         self.zeroes = []
+
+        # Task 6
+        if derivativeMatrix is None:
+            # partial derivative of functions with respect to X1
+            partialDerivativeX1 = [lambda X: (func(x + [h, 0]) - func(X)) / h for func in functionVector]
+            # partial derivative of functions with respect to X2
+            partialDerivativeX2 = [lambda X: (func(x + [0 , h]) - func(X)) / h for func in functionVector]
+            # transpses matrix to form a proper jacobian matrix
+            self.derivativeMatrix = np.matrix([partialDerivativeX1, partialDerivativeX2]).transpose()
+        else:
+             self.derivativeMatrix = derivativeMatrix
 
 
     def findZeroPosition(self, X):

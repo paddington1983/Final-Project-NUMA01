@@ -105,22 +105,27 @@ class FractalsTest(unittest.TestCase):
         # should return exactly the same vector and 0 iterations
         self.assertEqual(id(position), id(guess))
         self.assertEqual(iterationsNeeded, 0)
-    def test_findZeroPosition_converges_to_zero2(self):
-        # find the zero at 10^(-1/3), -3^(1/2) * 10^(-1/3)
+    def test_findZeroPosition_converges_to_zero123(self):
+        # find the zero at 1, 0 in a few iterations
         
-        guess = np.array([0.5, -1])
+        guess = np.array([0.9, 0.1])
         position, _ = fractal.findZeroPosition(guess)
         
-        # seems to diverge, don't know if this is correct
-        #nt.assert_allclose(position, np.array([10**(-1/3), -3**(1/2) * 10**(-1/3)]))
-    def test_findZeroPosition_converges_to_zero3(self):
-        # find the zero at 10^(-1/3), 3^(1/2) * 10^(-1/3)
+        nt.assert_allclose(position, np.array([1, 0]), rtol=1e-05, atol=1e-08)
         
-        guess = np.array([0.5, 1])
+        # find the zero at -1/2, sqrt(3)/2 in a few iterations
+        
+        guess = np.array([-0.4, 0.9])
         position, _ = fractal.findZeroPosition(guess)
         
-        # seems to diverge, don't know if this is correct
-        #nt.assert_allclose(position, np.array([10**(-1/3), 3**(1/2) * 10**(-1/3)]))
+        nt.assert_allclose(position, np.array([-1/2, np.sqrt(3)/2]), rtol=1e-05, atol=1e-08)
+
+        # find the zero at -1/2, -sqrt(3)/2 in a few iterations
+        
+        guess = np.array([-0.4, -0.9])
+        position, _ = fractal.findZeroPosition(guess)
+        
+        nt.assert_allclose(position, np.array([-1/2, -np.sqrt(3)/2]), rtol=1e-05, atol=1e-08)
     def test_findZeroPosition_slide_example_works(self):
         # check if the example used in the slides works, we know from that example where it converges to and in how many iterations
         

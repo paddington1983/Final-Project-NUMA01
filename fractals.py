@@ -6,6 +6,7 @@ Created on Wed Dec 19 15:40:25 2018
 """
 import matplotlib.pyplot as plt
 import numpy as np
+from mpl_toolkits.mplot3d import axes3d
 
 class fractal2D:
     def __init__(self, functionVector, derivativeMatrix=None, h=1e-3): 
@@ -195,11 +196,12 @@ class fractal2D:
             ax.set_zlabel('z')
             plt.tick_params(labelsize=10)
             ax.plot_surface(columns, rows, zerosMatrix, rstride=10, cstride=10, cmap='jet')
-        else:
-            plt.pcolor(columns, rows, zerosMatrix, cmap='gray' if showIterations else 'viridis')
-            # Make sure the height and width of the plot are of equal length. 
-            # So each colored rectangle is square like a pixel.
-            plt.axis('scaled')
+            plt.show()
+            
+        plt.pcolor(columns, rows, zerosMatrix, cmap='gray' if showIterations else 'viridis')
+        # Make sure the height and width of the plot are of equal length. 
+        # So each colored rectangle is square like a pixel.
+        plt.axis('scaled')
         plt.show()
     
     

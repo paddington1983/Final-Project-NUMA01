@@ -50,7 +50,7 @@ class FractalsTest(unittest.TestCase):
         output = f.fractal2D(functionVector)
         
         self.assertEqual(id(output.functionVector), id(functionVector))
-        self.assertIsNone(output.derivativeMatrix)
+        self.assertIsInstance(output.derivativeMatrix, np.matrix)
         
         self.assertIsInstance(output.zeroes, list)
         self.assertFalse(output.zeroes)
@@ -162,7 +162,7 @@ class FractalsTest(unittest.TestCase):
         show_backup = f.plt.show
         pcolor_backup = f.plt.pcolor
         axis_backup = f.plt.axis
-        doNothing = lambda *args: None
+        doNothing = lambda *args, **kwargs: None
         f.plt.show = doNothing
         f.plt.pcolor = doNothing
         f.plt.axis = doNothing

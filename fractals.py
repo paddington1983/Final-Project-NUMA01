@@ -44,13 +44,15 @@ class fractal2D:
         # Task 6
         if derivativeMatrix is None:
             # partial derivative of functions with respect to X1
-            partialDerivativeX1 = [lambda X: (func([X[0] + h, X[1]]) - func(X)) / h for func in functionVector]
+            d1x1 = lambda X: (functionVector[0]([X[0] + h, X[1]]) - functionVector[0](X)) / h
+            d2x1 = lambda X: (functionVector[1]([X[0] + h, X[1]]) - functionVector[1](X)) / h
             # partial derivative of functions with respect to X2
-            partialDerivativeX2 = [lambda X: (func([X[0], X[1] + h]) - func(X)) / h for func in functionVector]
+            d1x2 = lambda X: (functionVector[0]([X[0], X[1] + h]) - functionVector[0](X)) / h
+            d2x2 = lambda X: (functionVector[1]([X[0], X[1] + h]) - functionVector[1](X)) / h
             # transposes matrix to form a proper jacobian matrix
-            self.derivativeMatrix = np.matrix([partialDerivativeX1, partialDerivativeX2]).transpose()
+            self.derivativeMatrix = np.matrix([[d1x1, d1x2], [d2x1, d2x2]])
         else:
-             self.derivativeMatrix = derivativeMatrix
+            self.derivativeMatrix = derivativeMatrix
 
 
     def findZeroPosition(self, X, simplified=False):

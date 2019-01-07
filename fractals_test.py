@@ -191,5 +191,14 @@ class FractalsTest(unittest.TestCase):
         self.assertRaises(ValueError, fractal.plot, 2, -1, 1, 1, -1)
         self.assertRaises(ValueError, fractal.plot, 2, -1, 1, 1, 1)
 
+
+    # TESTS FOR TASK 6
+    def test_findZeroPosition_slide_example_works_no_derivative(self):
+        slidesFractal = f.fractal2D(np.array([f1, f2]))
+        position, _ = slidesFractal.findZeroPosition(np.array([1, 1]))
+        
+        nt.assert_allclose(position, np.array([3, 4]))
+        
+
 suite = unittest.TestLoader().loadTestsFromTestCase(FractalsTest)
 unittest.TextTestRunner(verbosity=2).run(suite)

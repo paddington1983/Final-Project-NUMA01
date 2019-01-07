@@ -219,8 +219,8 @@ class fractal2D:
       
         return
     
- #TASK7
-     def NumberOfIterations(self,resolution, x1Start, x1Stop, x2Start, x2Stop, findZeroIndex=False):
+    #TASK7
+    def NumberOfIterations(self,resolution, x1Start, x1Stop, x2Start, x2Stop, findZeroIndex=False):
         if not isinstance(resolution, int):
             raise TypeError('Resolution should be of type int.')
         if not all(isinstance(variable, (int or float)) for variable in [x1Start, x1Stop, x2Start, x2Stop]):

@@ -69,9 +69,6 @@ class fractal2D:
         
         iterationsNeeded = 0
         
-        # make the inverse J matrix available outside the if
-        Jinv = None
-        
         while True:
             # calculate the vector of Y values using the vector of X values (the X position)
             Y = np.array([function(X) for function in self.functionVector])
